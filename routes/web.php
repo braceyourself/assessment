@@ -13,8 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::view('/sample', 'sample');
+Route::view('/login', 'login')->name('login')->middleware('guest');
+
+Route::group(['middleware' => ['auth:web']], function() {
+    Route::redirect('/', '/dashboard');
+    Route::view('/dashboard', 'dashboard');
+
+    Route::resource('/brands', 'App\Http\Controllers\BrandController');
+    Route::resource('/stores', 'App\Http\Controllers\StoreController');
+    Route::resource('/stores/{store}/journal', 'App\Http\Controllers\JournalController');
+
+});

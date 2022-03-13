@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Journal extends Model
 {
     use HasFactory;
+
+    /**********************************************
+     * relations
+     **********************************************/
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }
