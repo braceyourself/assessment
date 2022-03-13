@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__.'/auth.php';
 
-Route::view('/login', 'login')->name('login')->middleware('guest');
-
-Route::group(['middleware' => ['auth:web']], function() {
+Route::group(['middleware' => ['auth']], function() {
     Route::redirect('/', '/dashboard');
-    Route::view('/dashboard', 'dashboard');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
 
     Route::resource('/brands', 'App\Http\Controllers\BrandController');
     Route::resource('/stores', 'App\Http\Controllers\StoreController');
