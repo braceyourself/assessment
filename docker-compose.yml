@@ -1,0 +1,94 @@
+version: '3.8'
+services:
+    php:
+        image: ethanabrace/php:8.0-fpm
+        user: '1000:1000'
+        restart: always
+        volumes:
+            - "./:/var/www/html"
+
+    nginx:
+        image: ethanabrace/nginx
+        user: '1000:1000'
+        restart: always
+        volumes:
+            - "./:/var/www/html"
+        ports:
+            - '8000:80'
+        environment:
+            PROXY_PASS: php
+            PROXY_PASS_PORT: 9000
+
+    mysql:
+        image: mysql:8.0
+        restart: always
+        cap_add:
+            - SYS_NICE
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            interval: 1s
+            retries: 10
+
+    mailhog:
+        image: mailhog/mailhog
+        restart: always
+        ports:
+            - '8025:8025'
+
+    redis:
+        image: redis:alpine
+        restart: always
+
+    horizon:
+        image: ethanabrace/php:8.0-fpm
+        user: '1000:1000'
+        restart: always
+        entrypoint: /var/www/html/artisan
+        command: "horizon"
+        volumes:
+            - './:/var/www/html'
+
+
+    ###################################
+    # Command services                #
+    ###################################
+    composer:
+        image: ethanabrace/php:8.0-fpm
+        user: "1000:1000"
+        entrypoint: /usr/local/bin/composer
+        volumes:
+            - ./:/var/www/html
+            - ~/:/var/www
+        profiles:
+            - runonly
+
+    artisan:
+        image: ethanabrace/php:8.0-fpm
+        entrypoint: /var/www/html/artisan
+        user: "1000:1000"
+        volumes:
+            - ./:/var/www/html
+            - ~/:/var/www
+        profiles:
+            - runonly
+
+
+    node:
+        image: node:14
+        working_dir: /var/www/html
+        user: '1000:1000'
+        volumes:
+            - ./:/var/www/html
+        profiles:
+            - runonly
+
+
+networks:
+    traefik_default:
+        external: true
