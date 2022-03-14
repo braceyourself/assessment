@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+    mix:
+        image: node:14
+        working_dir: /var/www/html
+        user: '1000'
+        volumes:
+            - ./:/var/www/html
+        command: 'npx mix build -p'
+#        command: 'npx mix watch --hot'
+#        command: 'npx mix watch'
+#        networks:
+#            - traefik_default
+#            - default
+        labels:
+            traefik.enable: true
+            traefik.http.routers.hmr.rule: Host(`hmr.localhost`)
+            traefik.backend: hmr.localhost
+            traefik.frontend.rule: Host:hmr.localhost
+            traefik.docker.network: traefik_default
+            traefik.http.services.hmr.loadbalancer.server.port: 8080
+
+# for this to work with hot module replacement, you'll need to
+#    create a traefik instance running on your local machine
+# to avoid that fuss, just use watch without the --hot option
+
+
+# Uncomment if you actually got it set up. :D (don't forget the networks above as well)
+#networks:
+#    traefik_default:
+#        external: true

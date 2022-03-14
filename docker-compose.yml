@@ -58,7 +58,12 @@ services:
 
 
     ###################################
-    # Command services                #
+    # Command services - these will not run with the rest of the services
+    # usage: docker-compose run --rm composer install --no-dev
+    #        docker-compose run --rm artisan migrate:fresh --seed
+    #        docker-compose run --rm node npm install
+    #
+    # set up some bash aliases or functions for some extra good times
     ###################################
     composer:
         image: ethanabrace/php:8.0-fpm
@@ -89,8 +94,3 @@ services:
             - ./:/var/www/html
         profiles:
             - runonly
-
-
-networks:
-    traefik_default:
-        external: true
