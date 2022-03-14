@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property Collection|Brand[] $store_brands
+ * @property Collection|Store[] $stores
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -49,6 +55,20 @@ class User extends Authenticatable
     public function stores()
     {
         return $this->belongsToMany(Store::class)->using(StoreUser::class);
+    }
+
+    /**********************************************
+     * attributes
+     **********************************************/
+
+    /**
+     * Accessor for $this->store_brands
+     */
+    public function getStoreBrandsAttribute()
+    {
+        return Brand::query()->whereIn(
+            'id', $this->stores()->select('brand_id')->distinct()
+        )->get();
     }
 
 

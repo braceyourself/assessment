@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         collect(['KFC', 'Taco Bell', 'Pizza Hut', 'The Habit Burger Grill'])
             ->each(fn($name) => Brand::factory()->name($name)->create());
 
-        \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(3)->create();
         \App\Models\User::factory()->create([
             'email'    => 'test@yum.yum',
             'name'     => 'Mr Test',
@@ -32,8 +32,8 @@ class DatabaseSeeder extends Seeder
 
         User::all()->each(function(User $user) {
             $stores = Store::factory()
-                           ->has(Journal::factory()->count(3), 'journal')
-                           ->count(3)
+                           ->has(Journal::factory()->count(25), 'journal')
+                           ->count(10)
                            ->create();
 
             $user->addStores($stores);

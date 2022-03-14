@@ -15,7 +15,7 @@ class BrandFactory extends Factory
     {
         return [
             'name'  => \Str::of($this->faker->lastName)->pluralStudly(),
-            'color' => $this->faker->hexColor,
+            'color' => $this->faker->safeHexColor,
         ];
     }
 
