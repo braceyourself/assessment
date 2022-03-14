@@ -10,11 +10,8 @@
 
     <title>@yield('page_title', 'Admin - '.config('app.name'))</title>
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet" >
-    @stack('styles')
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+@stack('styles')
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -22,19 +19,16 @@
 </head>
 <body class="font-sans antialiased">
 <div class="min-h-screen bg-gray-100">
-@include('layouts.navigation')
-
-<!-- Page Heading -->
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            {{ $header }}
-        </div>
-    </header>
+    <x-navigation :data="$navigation"/>
 
     <!-- Page Content -->
     <main>
         {{ $slot }}
     </main>
 </div>
+
+<!-- Scripts -->
+<script src="{{ mix('js/app.js') }}" defer></script>
+
 </body>
 </html>

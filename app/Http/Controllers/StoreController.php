@@ -22,29 +22,4 @@ class StoreController extends Controller
         return $store;
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function edit(Store $store)
-    {
-        //
-    }
-
-    public function update(Request $request, Store $store)
-    {
-        //
-    }
-
-    public function destroy(Store $store)
-    {
-        //
-    }
-
 }
