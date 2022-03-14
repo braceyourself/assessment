@@ -1,17 +1,36 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-
-                </div>
+    <x-page-content >
+        <div x-data="{ selected_brand: null }"
+             @click.outside="selected_brand = null"
+             @close.stop="selected_brand = null"
+             class="m-4"
+        >
+            <div class="text-lg text-center">
+                Select a brand to see your stores.
             </div>
+
+            <div class="flex border-blue justify-center">
+                @foreach(Auth::user()->store_brands as $brand)
+                    <div @click="selected_brand = selected_brand === {{$brand->id}} ? null : {{$brand->id}}">
+                        <x-brand :brand="$brand"/>
+                    </div>
+                @endforeach
+            </div>
+
+            <div x-cloak x-show="selected_brand !== null">
+
+                <div class="flex justify-center mt-4 flex-wrap">
+                    @foreach(Auth::user()->stores as $store)
+                        <div x-show="{{$store->brand_id}} === selected_brand">
+                            <x-store :store="$store"/>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+
+
         </div>
-    </div>
+
+    </x-page-content>
 </x-app-layout>

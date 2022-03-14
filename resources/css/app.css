@@ -1,3 +1,6 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+/*to prevent data behind x-show or x-if from popping on screen while the page is loading*/
+[x-cloak] { display: none; }
