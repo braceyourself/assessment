@@ -10,3 +10,6 @@
    1. app: http://localhost:8000/
    2. horizon: http://localhost:8000/horizon
    3. mailhog: http://localhost:8025
+
+login: test@yum.yum
+password: test-password
