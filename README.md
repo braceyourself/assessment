@@ -12,4 +12,5 @@
    3. mailhog: http://localhost:8025
 
 login: test@yum.yum
+
 password: test-password
